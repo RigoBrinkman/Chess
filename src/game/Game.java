@@ -23,9 +23,11 @@ public class Game {
     private List<Piece> pieces;
     private Board board;
     private Turn turn;
+    private boolean gameIsOver;
 
     private Game() {
         LOGGER.fine("Creating game");
+        gameIsOver = false;
 
         try {
             LOGGER.log(Level.FINE, "Using property file {0}", FILENAME);
@@ -56,7 +58,10 @@ public class Game {
         LOGGER.finer("Creating pieces");
         this.pieces = createPieces(this.board);
 
-        this.turn = Turn.startTurn(players.get(0));
+        Turn.firstTurn(players);
+        while (!gameIsOver) {
+            Turn.newTurn();
+        }
     }
 
     public static Game startNewGame() {
